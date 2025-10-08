@@ -1,82 +1,46 @@
-import { recipeApi, type Recipe } from "@/api/recipeApi";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import RecipeTable from "@/components/RecipeTable";
+import { Plus, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 function RecipePage() {
-  const [array, setArray] = useState<Recipe[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchRecipe = async () => {
-    try {
-      setLoading(true);
-      const recipes = await recipeApi.getAllRecipe();
-      setArray(recipes);
-    } catch (error) {
-      setError("Error fetching recipes");
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRecipe();
-  }, []);
-
-  if (loading) {
-    return <div className="p-4">Loading recipes...</div>;
-  }
-
-  if (error) {
-    return <div className="p-4 text-red-600">{error}</div>;
-  }
-
   return (
-    <div className="p-4 w-full overflow-x-auto">
+    <div className="p-6 w-full">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Recipes</h1>
-        <Table className="w-full">
-          <TableCaption>A list of our recent recipes.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[60px]">ID</TableHead>
-              <TableHead className="w-[200px]">Name</TableHead>
-              <TableHead className="w-[300px]">Ingredients</TableHead>
-              <TableHead className="min-w-[400px]">Instructions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {array.length > 0 ? (
-              array.map((recipe) => (
-                <TableRow key={recipe.id}>
-                  <TableCell className="font-medium">{recipe.id}</TableCell>
-                  <TableCell className="font-semibold">{recipe.name}</TableCell>
-                  <TableCell className="whitespace-normal break-words">
-                    {recipe.ingredients}
-                  </TableCell>
-                  <TableCell className="whitespace-normal break-words">
-                    {recipe.instructions}
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={4} className="text-center">
-                  No recipe found
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        {/* Header Section */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Recipes</h1>
+              <p className="text-gray-600 mt-1">
+                Manage and browse your recipe collection
+              </p>
+            </div>
+            <Button className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Add Recipe
+            </Button>
+          </div>
+
+          {/* Search and Filter Bar */}
+          <div className="flex gap-4 items-center">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search recipes..."
+                className="pl-10"
+              />
+            </div>
+            <Button variant="outline">Filter</Button>
+            <Button variant="outline">Sort</Button>
+          </div>
+        </div>
+
+        {/* Recipe Table */}
+        <div className="bg-white rounded-lg border shadow-sm">
+          <RecipeTable />
+        </div>
       </div>
     </div>
   );

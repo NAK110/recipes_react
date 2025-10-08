@@ -3,8 +3,6 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { BubbleBackground } from "@/components/ui/shadcn-io/bubble-background";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 
-
-
 export default function RegisterPage() {
   return (
     <BubbleBackground interactive={true}>
