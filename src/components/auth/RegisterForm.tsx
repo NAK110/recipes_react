@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "@/api/services/authApi";
+import { AxiosError } from "axios";
 
 export function RegisterForm({
   className,
@@ -37,12 +38,13 @@ export function RegisterForm({
     try {
       const res = await authApi.register({ username, email, password });
 
-      localStorage.setItem("token", res.token);
+      // localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
 
-      navigate("/"); //it should be / not /register/dashboard
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+      navigate("/");
+    } catch (err) {
+      const error = err as AxiosError<{message : string}>
+      setError(error.response?.data?.message || "Registration failed");
       console.log("Registration error", err);
     } finally {
       setLoading(false);
