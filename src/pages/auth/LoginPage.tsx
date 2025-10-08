@@ -1,10 +1,10 @@
 import { GalleryVerticalEnd } from "lucide-react";
-
 import { LoginForm } from "@/components/auth/LoginForm";
-
 import { BubbleBackground } from "@/components/ui/shadcn-io/bubble-background";
 
 export default function LoginPage() {
+
+  
   return (
     <BubbleBackground interactive={true}>
       <div className="relative z-10 flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10 pointer-events-auto">

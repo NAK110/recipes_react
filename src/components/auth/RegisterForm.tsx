@@ -29,7 +29,7 @@ export function RegisterForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="bg-accent">
+      <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Register Your Account</CardTitle>
           <CardDescription>
@@ -53,12 +53,6 @@ export function RegisterForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
                 </div>
                 <Input
                   id="password"
@@ -69,7 +63,7 @@ export function RegisterForm({
                 />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Register</Button>
                 <FieldDescription className="text-center">
                   Have an account? <a href="/login">Login</a>
                 </FieldDescription>
