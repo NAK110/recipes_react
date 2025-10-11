@@ -10,6 +10,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { SquarePen, Trash2 } from "lucide-react";
 
 export default function RecipeTable() {
   const [array, setArray] = useState<Recipe[]>([]);
@@ -53,6 +55,7 @@ export default function RecipeTable() {
               <TableHead className="w-[200px]">Name</TableHead>
               <TableHead className="w-[300px]">Ingredients</TableHead>
               <TableHead className="min-w-[400px]">Instructions</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -66,6 +69,16 @@ export default function RecipeTable() {
                   </TableCell>
                   <TableCell className="whitespace-normal break-words">
                     {recipe.instructions}
+                  </TableCell>
+                  <TableCell>
+                    <Button size="sm" variant="default" className="text-accent">
+                      <SquarePen />
+                      Edit
+                    </Button>
+                    <Button size="sm" variant="destructive" className="ml-2">
+                      <Trash2 />
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))

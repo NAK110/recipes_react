@@ -13,14 +13,6 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
 
-// Menu items with actual routes
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-};
 const items = [
   {
     title: "Recipes",
@@ -64,7 +56,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

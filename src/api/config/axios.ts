@@ -10,6 +10,19 @@ const axiosApi = axios.create(
     }
 )
 
+axiosApi.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token'); // Get token from localStorage
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+)
+
 
 axiosApi.interceptors.response.use(
     (response) => response,

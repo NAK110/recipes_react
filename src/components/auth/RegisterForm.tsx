@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { authApi } from "@/api/services/authApi";
 import { AxiosError } from "axios";
 
@@ -111,7 +111,7 @@ export function RegisterForm({
                   {loading ? "Registering" : "Register"}
                 </Button>
                 <FieldDescription className="text-center">
-                  Have an account? <a href="/login">Login</a>
+                  Have an account? <Link to="/login">Login</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
