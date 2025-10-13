@@ -1,34 +1,44 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import type { Recipe } from "@/api/types/recipeTypes";
+import React, { useEffect } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Field, FieldGroup, FieldLabel } from "../ui/field";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { recipeApi } from "@/api/services/recipeApi";
 import { toast } from "sonner";
 import axios from "axios";
 
-interface AddRecipeProps {
+interface EditRecipeProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onRecipeCreated?: () => void;
+  recipe: Recipe | null;
+  onRecipeUpdated?: () => void;
 }
 
-function AddRecipe({ open, onOpenChange, onRecipeCreated }: AddRecipeProps) {
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [recipeName, setRecipeName] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+function EditRecipe({
+  open,
+  onOpenChange,
+  recipe,
+  onRecipeUpdated,
+}: EditRecipeProps) {
+  const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [recipeName, setRecipeName] = React.useState("");
+  const [ingredients, setIngredients] = React.useState("");
+  const [instructions, setInstructions] = React.useState("");
+
+  useEffect(() => {
+    if (recipe) {
+      setRecipeName(recipe.name);
+      setIngredients(recipe.ingredients);
+      setInstructions(recipe.instructions);
+    }
+  }, [recipe]);
 
   const handleSubmit = async () => {
+    if (!recipe) return;
     setError(null);
 
-    // Validation
     if (!recipeName.trim()) {
       setError("Recipe name is required");
       return;
@@ -45,33 +55,24 @@ function AddRecipe({ open, onOpenChange, onRecipeCreated }: AddRecipeProps) {
     setLoading(true);
 
     try {
-      await recipeApi.createRecipe({
+      await recipeApi.updateRecipe(recipe.id, {
         name: recipeName.trim(),
         ingredients: ingredients.trim(),
         instructions: instructions.trim(),
       });
 
-      // Show success toast
-      toast.success("Recipe created successfully!", {
-        description: `${recipeName} has been added to your recipes.`,
+      toast.success("Recipe updated successfully!", {
+        description: `${recipeName} has been updated.`,
         duration: 3000,
       });
 
-      // Reset form
-      setRecipeName("");
-      setIngredients("");
-      setInstructions("");
-
-      // Trigger refresh in parent
-      if (onRecipeCreated) {
-        onRecipeCreated();
+      if (onRecipeUpdated) {
+        onRecipeUpdated();
       }
 
-      // Close dialog
       onOpenChange(false);
     } catch (err) {
-      
-      let errorMessage = "Failed to create recipe. Please try again.";
+      let errorMessage = "Failed to update recipe. Please try again.";
 
       if (axios.isAxiosError(err)) {
         errorMessage = err.response?.data?.message || errorMessage;
@@ -81,9 +82,9 @@ function AddRecipe({ open, onOpenChange, onRecipeCreated }: AddRecipeProps) {
 
       setError(errorMessage);
 
-      toast.error("Failed to create recipe", {
+      toast.error("Error updating recipe", {
         description: errorMessage,
-        duration: 4000,
+        duration: 3000,
       });
     } finally {
       setLoading(false);
@@ -94,7 +95,7 @@ function AddRecipe({ open, onOpenChange, onRecipeCreated }: AddRecipeProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Create Your Recipe</DialogTitle>
+          <DialogTitle>Edit Recipe</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -155,7 +156,7 @@ function AddRecipe({ open, onOpenChange, onRecipeCreated }: AddRecipeProps) {
               Cancel
             </Button>
             <Button type="button" onClick={handleSubmit} disabled={loading}>
-              {loading ? "Creating..." : "Create Recipe"}
+              {loading ? "Updating..." : "Update Recipe"}
             </Button>
           </div>
         </div>
@@ -163,5 +164,4 @@ function AddRecipe({ open, onOpenChange, onRecipeCreated }: AddRecipeProps) {
     </Dialog>
   );
 }
-
-export default AddRecipe;
+export default EditRecipe;

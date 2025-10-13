@@ -1,28 +1,19 @@
-import RecipeTable from "@/components/recipe/RecipeTable";
+import RecipeTable, { type RecipeTableRef } from "@/components/recipe/RecipeTable";
 import { Plus, Search, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type User } from "@/api/types/user";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddRecipe from "@/components/recipe/AddRecipe";
-import { recipeApi } from "@/api/services/recipeApi";
 
 function RecipePage() {
   const [user, setUser] = useState<User | null>(null);
   const [open, setOpen] = useState(false);
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const recipeTableRef = useRef<RecipeTableRef>(null);
 
-  const fetchAllRecipe = async () => {
-    try {
-      const res = await recipeApi.getAllRecipe();
-      setRecipes(res);
-    } catch (err) {
-      console.error("Failed to fetch recipes", err);
-    }
-  };
-  useEffect(() => {
-    fetchAllRecipe();
-  }, []);
+  const handleRecipeCreated = () => {
+    recipeTableRef.current?.fetchRecipe();
+  }
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -74,8 +65,8 @@ function RecipePage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Recipes</h1>
-              <p className="text-gray-600 mt-1">
+              <h1 className="text-3xl font-bold">Recipes</h1>
+              <p className="text-pretty mt-1">
                 Manage and browse your recipe collection
               </p>
             </div>
@@ -86,7 +77,7 @@ function RecipePage() {
               <Plus className="h-4 w-4" />
               Add Recipe
             </Button>
-            <AddRecipe open={open} onOpenChange={setOpen} onRecipeCreated={fetchAllRecipe} />
+            <AddRecipe open={open} onOpenChange={setOpen} onRecipeCreated={handleRecipeCreated} />
           </div>
 
           {/* Search and Filter Bar */}
@@ -106,7 +97,7 @@ function RecipePage() {
 
         {/* Recipe Table */}
         <div className="bg-background rounded-lg border shadow-sm">
-          <RecipeTable />
+          <RecipeTable ref={recipeTableRef}/>
         </div>
       </div>
     </div>
