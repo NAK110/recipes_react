@@ -1,6 +1,6 @@
 import { userApi } from "@/api/services/userApi";
 import { type User } from "@/api/types/user";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import {
   Table,
   TableBody,
@@ -15,7 +15,11 @@ import { SquarePen, Trash2 } from "lucide-react";
 import EditUser from "./EditUser";
 import DeleteUser from "./DeleteUser";
 
-function UserTable() {
+export interface userTableRef {
+  fetchUsers: () => Promise<void>;
+}
+
+const UserTable = forwardRef<userTableRef>((_props, ref) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,6 +62,10 @@ function UserTable() {
       setLoading(false);
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    fetchUsers
+  }))
 
   useEffect(() => {
     fetchUsers();
@@ -149,6 +157,6 @@ function UserTable() {
       />
     </>
   );
-}
+});
 
 export default UserTable;

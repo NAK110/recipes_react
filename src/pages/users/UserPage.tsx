@@ -1,12 +1,19 @@
 import { type User } from "@/api/types/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import UserTable from "@/components/user/UserTable";
+import AddUser from "@/components/user/AddUser";
+import UserTable, { type userTableRef } from "@/components/user/UserTable";
 import { AlertCircle, Plus, Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function UserPage() {
   const [user, setUser] = useState<User | null>(null);
+  const [open, setOpen] = useState(false);
+  const userTableRef = useRef<userTableRef>(null)
+
+  const handleUserCreated = () => {
+    userTableRef.current?.fetchUsers();
+  }
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -64,12 +71,12 @@ function UserPage() {
               </p>
             </div>
             <Button
-              className="flex items-center gap-2"
+              className="flex items-center gap-2" onClick={() => setOpen(true)}
             >
               <Plus className="h-4 w-4" />
               Add User
             </Button>
-            {/* <AddUser /> */}
+            <AddUser open={open} onOpenChange={setOpen} onUserCreated={handleUserCreated} />
           </div>
 
           {/* Search and Filter Bar */}
@@ -88,7 +95,7 @@ function UserPage() {
         </div>
 
         <div className="bg-background rounded-lg border shadow-sm">
-          <UserTable />
+          <UserTable ref={userTableRef} />
         </div>
       </div>
     </div>
