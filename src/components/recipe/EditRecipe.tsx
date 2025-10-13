@@ -1,5 +1,5 @@
 import type { Recipe } from "@/api/types/recipeTypes";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
@@ -21,11 +21,11 @@ function EditRecipe({
   recipe,
   onRecipeUpdated,
 }: EditRecipeProps) {
-  const [error, setError] = React.useState<string | null>(null);
-  const [loading, setLoading] = React.useState(false);
-  const [recipeName, setRecipeName] = React.useState("");
-  const [ingredients, setIngredients] = React.useState("");
-  const [instructions, setInstructions] = React.useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [recipeName, setRecipeName] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [instructions, setInstructions] = useState("");
 
   useEffect(() => {
     if (recipe) {

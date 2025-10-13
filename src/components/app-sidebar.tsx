@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Inbox,  } from "lucide-react";
+import { Inbox, User,  } from "lucide-react";
 import { GalleryVerticalEnd } from "lucide-react";
 import {
   Sidebar,
@@ -19,6 +19,11 @@ const items = [
     url: "/recipes",
     icon: Inbox,
   },
+  {
+    title: "Users",
+    url: "/users",
+    icon: User,
+  }
 ];
 
 export function AppSidebar() {
@@ -42,7 +47,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className="pb-2">
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
                       <item.icon />

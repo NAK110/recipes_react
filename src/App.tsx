@@ -7,6 +7,7 @@ import Layout from "./app/Layout";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./components/theme-provider";
+import UserPage from "./pages/users/UserPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           >
             <Route path="/" element={<Dashboard />} />
             <Route path="/recipes" element={<RecipePage />} />
+            <Route path="/users" element={<UserPage />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

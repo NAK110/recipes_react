@@ -1,0 +1,98 @@
+import { type User } from "@/api/types/user";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import UserTable from "@/components/user/UserTable";
+import { AlertCircle, Plus, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+
+function UserPage() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        console.error("Failed to parse user from localStorage");
+      }
+    }
+  }, []);
+
+  if (!user) return null;
+
+  return user.role !== "admin" ? (
+    <div className="min-h-screen w-full flex items-center justify-center bg-background p-6">
+      <div className="max-w-md w-full">
+        <div className="rounded-lg shadow-lg p-8 border">
+          {/* Icon and Title */}
+          <div className="flex flex-col items-center text-center mb-6">
+            <div className="bg-red-100 rounded-full p-4 mb-4">
+              <AlertCircle className="h-12 w-12 text-red-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-red-700 mb-2">
+              Unauthorized Access
+            </h2>
+            <p className="text-foreground leading-relaxed">
+              You do not have permission to view this page.
+              <br />
+              Please contact the administrator if you think this is a mistake.
+            </p>
+          </div>
+
+          {/* Action Button */}
+          <Button
+            variant="outline"
+            onClick={() => (window.location.href = "/")}
+            className="w-full"
+          >
+            Go Back Home
+          </Button>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="p-6 w-full">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-3xl font-bold">Users</h1>
+              <p className="text-pretty mt-1">
+                Manage your users and their roles
+              </p>
+            </div>
+            <Button
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Add User
+            </Button>
+            {/* <AddUser /> */}
+          </div>
+
+          {/* Search and Filter Bar */}
+          <div className="flex gap-4 items-center">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search recipes..."
+                className="pl-10"
+              />
+            </div>
+            <Button variant="outline">Filter</Button>
+            <Button variant="outline">Sort</Button>
+          </div>
+        </div>
+
+        <div className="bg-background rounded-lg border shadow-sm">
+          <UserTable />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default UserPage;
