@@ -78,7 +78,7 @@ function AddUser({ open, onOpenChange, onUserCreated }: AddUserProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit User</DialogTitle>
+          <DialogTitle>Add User</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -94,7 +94,7 @@ function AddUser({ open, onOpenChange, onUserCreated }: AddUserProps) {
               <Input
                 id="username"
                 type="text"
-                placeholder="John123"
+                placeholder="john123"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={loading}
@@ -133,7 +133,7 @@ function AddUser({ open, onOpenChange, onUserCreated }: AddUserProps) {
               <Input
                 id="password"
                 type="password"
-                placeholder="Leave blank to keep current password"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}

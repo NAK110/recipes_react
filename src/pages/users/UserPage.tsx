@@ -9,15 +9,14 @@ import { useEffect, useRef, useState } from "react";
 function UserPage() {
   const [user, setUser] = useState<User | null>(null);
   const [open, setOpen] = useState(false);
-  const userTableRef = useRef<userTableRef>(null)
+  const userTableRef = useRef<userTableRef>(null);
 
   const handleUserCreated = () => {
     userTableRef.current?.fetchUsers();
-  }
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
@@ -30,18 +29,18 @@ function UserPage() {
   if (!user) return null;
 
   return user.role !== "admin" ? (
-    <div className="min-h-screen w-full flex items-center justify-center bg-background p-6">
+    <div className="min-h-screen w-full flex items-center justify-center bg-background p-4 sm:p-6">
       <div className="max-w-md w-full">
-        <div className="rounded-lg shadow-lg p-8 border">
+        <div className="rounded-lg shadow-lg p-6 sm:p-8 border">
           {/* Icon and Title */}
           <div className="flex flex-col items-center text-center mb-6">
-            <div className="bg-red-100 rounded-full p-4 mb-4">
-              <AlertCircle className="h-12 w-12 text-red-500" />
+            <div className="bg-red-100 rounded-full p-3 sm:p-4 mb-4">
+              <AlertCircle className="h-10 w-10 sm:h-12 sm:w-12 text-red-500" />
             </div>
-            <h2 className="text-2xl font-bold text-red-700 mb-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-red-700 mb-2">
               Unauthorized Access
             </h2>
-            <p className="text-foreground leading-relaxed">
+            <p className="text-sm sm:text-base text-foreground leading-relaxed">
               You do not have permission to view this page.
               <br />
               Please contact the administrator if you think this is a mistake.
@@ -52,7 +51,7 @@ function UserPage() {
           <Button
             variant="outline"
             onClick={() => (window.location.href = "/")}
-            className="w-full"
+            className="w-full touch-manipulation"
           >
             Go Back Home
           </Button>
@@ -60,41 +59,58 @@ function UserPage() {
       </div>
     </div>
   ) : (
-    <div className="p-6 w-full">
+    <div className="p-4 sm:p-6 md:p-6 w-full">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold">Users</h1>
-              <p className="text-pretty mt-1">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 sm:mb-4">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold truncate">Users</h1>
+              <p className="text-sm sm:text-base text-muted-foreground mt-1">
                 Manage your users and their roles
               </p>
             </div>
             <Button
-              className="flex items-center gap-2" onClick={() => setOpen(true)}
+              className="flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap touch-manipulation"
+              onClick={() => setOpen(true)}
             >
               <Plus className="h-4 w-4" />
-              Add User
+              <span className="sm:inline">Add User</span>
             </Button>
-            <AddUser open={open} onOpenChange={setOpen} onUserCreated={handleUserCreated} />
+            <AddUser
+              open={open}
+              onOpenChange={setOpen}
+              onUserCreated={handleUserCreated}
+            />
           </div>
 
           {/* Search and Filter Bar */}
-          <div className="flex gap-4 items-center">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <div className="relative flex-1 sm:max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
               <Input
                 type="text"
-                placeholder="Search recipes..."
-                className="pl-10"
+                placeholder="Search users..."
+                className="pl-10 touch-manipulation"
               />
             </div>
-            <Button variant="outline">Filter</Button>
-            <Button variant="outline">Sort</Button>
+            <div className="flex gap-2 sm:gap-4">
+              <Button
+                variant="outline"
+                className="flex-1 sm:flex-none touch-manipulation"
+              >
+                Filter
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 sm:flex-none touch-manipulation"
+              >
+                Sort
+              </Button>
+            </div>
           </div>
         </div>
 
-        <div className="bg-background rounded-lg border shadow-sm">
+        <div className="bg-background rounded-lg border shadow-sm overflow-hidden">
           <UserTable ref={userTableRef} />
         </div>
       </div>
