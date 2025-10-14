@@ -86,7 +86,7 @@ const UserTable = forwardRef<userTableRef>((_props, ref) => {
         <div className="p-4 space-y-4">
           <h2 className="text-xl font-bold mb-4">Users</h2>
           {users.length > 0 ? (
-            users.map((user) => (
+            users.map((user, index) => (
               <div
                 key={user.id}
                 className="border rounded-lg p-4 space-y-3 shadow-sm"
@@ -97,7 +97,7 @@ const UserTable = forwardRef<userTableRef>((_props, ref) => {
                       {user.username}
                     </h3>
                     <p className="text-xs text-muted-foreground">
-                      ID: {user.id}
+                      ID: {index + 1}
                     </p>
                   </div>
                   <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary shrink-0">
@@ -160,9 +160,9 @@ const UserTable = forwardRef<userTableRef>((_props, ref) => {
               </TableHeader>
               <TableBody>
                 {users.length > 0 ? (
-                  users.map((user) => (
+                  users.map((user, index) => (
                     <TableRow key={user.id}>
-                      <TableCell className="font-medium">{user.id}</TableCell>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
                       <TableCell className="font-semibold">
                         {user.username}
                       </TableCell>

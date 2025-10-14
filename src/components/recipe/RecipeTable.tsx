@@ -88,7 +88,7 @@ const RecipeTable = forwardRef<RecipeTableRef>((_props, ref) => {
         <div className="p-4 space-y-4">
           <h2 className="text-xl font-bold mb-4">Recipes</h2>
           {recipes.length > 0 ? (
-            recipes.map((recipe) => (
+            recipes.map((recipe, index) => (
               <div
                 key={recipe.id}
                 className="border rounded-lg p-4 space-y-3 shadow-sm"
@@ -99,7 +99,7 @@ const RecipeTable = forwardRef<RecipeTableRef>((_props, ref) => {
                       {recipe.name}
                     </h3>
                     <p className="text-xs text-muted-foreground">
-                      ID: {recipe.id}
+                      ID: {index + 1}
                     </p>
                   </div>
                 </div>
@@ -116,9 +116,7 @@ const RecipeTable = forwardRef<RecipeTableRef>((_props, ref) => {
                     <p className="text-sm font-medium text-muted-foreground mb-1">
                       Instructions
                     </p>
-                    <p className="text-sm break-words">
-                      {recipe.instructions}
-                    </p>
+                    <p className="text-sm break-words">{recipe.instructions}</p>
                   </div>
                 </div>
 
@@ -170,11 +168,9 @@ const RecipeTable = forwardRef<RecipeTableRef>((_props, ref) => {
               </TableHeader>
               <TableBody>
                 {recipes.length > 0 ? (
-                  recipes.map((recipe) => (
+                  recipes.map((recipe, index) => (
                     <TableRow key={recipe.id}>
-                      <TableCell className="font-medium">
-                        {recipe.id}
-                      </TableCell>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
                       <TableCell className="font-semibold">
                         {recipe.name}
                       </TableCell>
