@@ -20,10 +20,15 @@ export const recipeApi = {
         return res.data;
     },
 
+    getRecipeById: async (id: number): Promise<Recipe> => {
+        const res = await axiosApi.get<Recipe>(`/recipes/${id}`);
+        return res.data;
+    },
+
     createRecipe: async (data: {
         name: string;
-        ingredients: string;
-        instructions: string
+        ingredients: string | string[];
+        instructions: string | string[]
     }): Promise<CreateRecipeResponse> => {
         const res = await axiosApi.post<CreateRecipeResponse>('/recipes', data);
         return res.data;
@@ -33,8 +38,8 @@ export const recipeApi = {
         id: number,
         data: {
             name?: string;
-            ingredients?: string;
-            instructions?: string
+            ingredients?: string | string[];
+            instructions?: string | string[]
         }
     ): Promise<UpdateRecipeResponse> => {
         const res = await axiosApi.put<UpdateRecipeResponse>(`/recipes/${id}`, data);

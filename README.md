@@ -1,28 +1,38 @@
 # Recipes React
 
-A modern recipe management application built with React and Vite, featuring fast refresh and an intuitive user interface for browsing and managing recipes.
+A modern recipe management application built with React and Vite, featuring a RESTful API integration with JWT authentication and role-based access control.
 
 ## 🚀 Features
 
 - **Fast Development**: Built with Vite for lightning-fast HMR (Hot Module Replacement)
 - **Modern React**: Utilizes the latest React features and best practices
-- **Recipe Management**: Browse, create, and manage recipes
-- **Admin Dashboard**: Administrative interface for managing content
+- **Recipe Management**: Browse, create, edit, and delete recipes with full CRUD operations
+- **User Authentication**: JWT-based authentication with login/register functionality
+- **Role-Based Access**: Admin and user roles with appropriate permissions
+- **User Management**: Admin interface for managing users
 - **Responsive Design**: Works seamlessly across desktop and mobile devices
+- **API Integration**: Seamless integration with Express.js backend
 
 ## 🛠️ Tech Stack
 
 - **React** - UI library for building interactive interfaces
+- **TypeScript** - Type-safe JavaScript development
 - **Vite** - Next-generation frontend tooling
+- **Axios** - HTTP client for API communication
+- **React Router** - Client-side routing
+- **Tailwind CSS** - Utility-first CSS framework
+- **Shadcn/ui** - Modern UI components
+- **JWT Decode** - JWT token handling
 - **ESLint** - Code linting and quality assurance
 
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
-- Node.js (v14 or higher)
+- Node.js (v16 or higher)
 - npm or yarn package manager
+- Backend server running (see [Backend Repository](https://github.com/NAK110/recipes_expressjs))
 
-## 🔧 Installation
+## 🔧 Installation & Setup
 
 1. Clone the repository:
 ```bash
@@ -37,14 +47,28 @@ npm install
 yarn install
 ```
 
-3. Start the development server:
+3. Set up environment variables:
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env file with your backend API URL
+VITE_API_URL=http://localhost:3001/api
+```
+
+4. Ensure the backend server is running:
+   - Clone and set up the [backend repository](https://github.com/NAK110/recipes_expressjs)
+   - Follow the backend setup instructions
+   - The backend should be running on `http://localhost:3001`
+
+5. Start the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-4. Open your browser and navigate to the local development URL (typically `http://localhost:5173`)
+6. Open your browser and navigate to `http://localhost:5173`
 
 ## 🔑 Admin Access
 
@@ -66,35 +90,91 @@ To access the admin panel, use the following credentials:
 ```
 recipes_react/
 ├── src/
-│   ├── components/     # Reusable React components
-│   ├── pages/          # Page components
-│   ├── assets/         # Static assets (images, fonts, etc.)
-│   └── App.jsx         # Main application component
-├── public/             # Public static files
-├── index.html          # HTML entry point
-├── vite.config.js      # Vite configuration
-├── package.json        # Project dependencies
-└── eslint.config.js    # ESLint configuration
+│   ├── api/                # API integration layer
+│   │   ├── config/         # Axios configuration
+│   │   ├── services/       # API service functions
+│   │   └── types/          # TypeScript type definitions
+│   ├── app/                # App layout components
+│   ├── components/         # Reusable React components
+│   │   ├── auth/           # Authentication components
+│   │   ├── recipe/         # Recipe management components
+│   │   ├── user/           # User management components
+│   │   └── ui/             # Shadcn/ui components
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility functions
+│   ├── pages/              # Page components
+│   │   ├── auth/           # Login/Register pages
+│   │   ├── dashboard/      # Dashboard page
+│   │   ├── recipes/        # Recipe pages
+│   │   └── users/          # User management pages
+│   ├── App.tsx             # Main application component
+│   └── main.tsx            # Application entry point
+├── public/                 # Public static files
+├── index.html              # HTML entry point
+├── vite.config.ts          # Vite configuration
+├── tsconfig.json           # TypeScript configuration
+├── package.json            # Project dependencies
+└── eslint.config.js        # ESLint configuration
 ```
 
-## 🔌 Vite Plugins
+## 🔌 Backend Integration
 
-This project uses official Vite plugins for React:
+This frontend application integrates with an Express.js backend API:
 
-- **[@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react)** - Uses Babel for Fast Refresh
-- **[@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc)** - Uses SWC for Fast Refresh (alternative)
+- **Backend Repository**: [recipes_expressjs](https://github.com/NAK110/recipes_expressjs)
+- **API Endpoints**: RESTful API with full CRUD operations
+- **Authentication**: JWT-based authentication system
+- **Database**: MySQL database with Knex.js ORM
+- **Security**: Rate limiting, input validation, and security headers
+
+### API Endpoints Used:
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/recipes` - Get all recipes
+- `GET /api/recipes/:id` - Get recipe by ID
+- `POST /api/recipes` - Create new recipe (Admin)
+- `PUT /api/recipes/:id` - Update recipe (Admin)
+- `DELETE /api/recipes/:id` - Delete recipe (Admin)
+- `GET /api/users` - Get all users (Admin)
+- `POST /api/users` - Create user (Admin)
+- `PUT /api/users/:id` - Update user (Admin)
+- `DELETE /api/users/:id` - Delete user (Admin)
+
+## 🌐 Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_API_URL=http://localhost:3001/api
+```
+
+Make sure the backend server is running on the specified port.
 
 ## 🎯 Usage
 
-### Browsing Recipes
-1. Navigate to the main page to view available recipes
-2. Click on any recipe card to view detailed information
-3. Use search and filter options to find specific recipes
+### Authentication
+1. **Register**: Create a new account with username, email, and password
+2. **Login**: Access your account with username and password
+3. **Role-based Access**: Users have different permissions based on their role (user/admin)
 
-### Admin Functions
-1. Log in with admin credentials
-2. Access the admin dashboard
-3. Create, edit, or delete recipes
+### Recipe Management
+1. **Browse Recipes**: View all available recipes in the recipe page
+2. **View Recipe Details**: Click on any recipe to see detailed information
+3. **Create Recipes**: Admin users can add new recipes with ingredients and instructions
+4. **Edit Recipes**: Admin users can modify existing recipes
+5. **Delete Recipes**: Admin users can remove recipes
+
+### User Management (Admin Only)
+1. **View Users**: Access the user management page
+2. **Create Users**: Add new users with specific roles
+3. **Edit Users**: Modify user information and roles
+4. **Delete Users**: Remove users from the system
+
+### API Features
+- **JWT Authentication**: Secure token-based authentication
+- **Automatic Token Management**: Tokens are automatically attached to requests
+- **Error Handling**: Comprehensive error handling for API calls
+- **Role-based Permissions**: Different API access based on user roles
 
 
 ## 👤 Author
@@ -102,11 +182,15 @@ This project uses official Vite plugins for React:
 **NAK110**
 
 - GitHub: [@NAK110](https://github.com/NAK110)
+- Frontend Repository: [recipes_react](https://github.com/NAK110/recipes_react)
+- Backend Repository: [recipes_expressjs](https://github.com/NAK110/recipes_expressjs)
 
 ## 🙏 Acknowledgments
 
 - React team for the amazing library
 - Vite team for the blazing-fast build tool
+- Shadcn/ui for the beautiful component library
+- Tailwind CSS for the utility-first CSS framework
 - All contributors who help improve this project
 
 ---
